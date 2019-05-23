@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+	.square{
+		width: 800px;
+		margin: 0 auto;
+	}
+	.square div{
+		width: 195px;
+		height: 195px;
+		border: solid 1px;
+		float: left;
+	}
+</style>
+</head>
+<body>
+	<div class="square" id="square">
+		<div onclick="main(this)" id="0"></div>
+		<div onclick="main(this)" id="1"></div>
+		<div onclick="main(this)" id="2"></div>
+		<div onclick="main(this)" id="3"></div>
+		<div onclick="main(this)" id="4"></div>
+		<div onclick="main(this)" id="5"></div>
+		<div onclick="main(this)" id="6"></div>
+		<div onclick="main(this)" id="7"></div>
+		<div onclick="main(this)" id="8"></div>
+		<div onclick="main(this)" id="9"></div>
+		<div onclick="main(this)" id="10"></div>
+		<div onclick="main(this)" id="11"></div>
+		<div onclick="main(this)" id="12"></div>
+		<div onclick="main(this)" id="13"></div>
+		<div onclick="main(this)" id="14"></div>
+		<div onclick="main(this)" id="15"></div>
+	</div>
+	<button onclick="start()">Старт</button>
+	<p id="timme"></p>
+	<script>
+		//добавить секундомер
+		document.getElementById('square').style.pointerEvents = 'none';
+		function start(){
+			 min = 0;
+			 sec = 0;
+			 msec = 0;
+			document.getElementById('square').style.pointerEvents = 'auto';
+			 timerId = setInterval(timer,10);
+		}
+		final =0;
+		function timer(){			
+			if(msec == 100){
+				msec = 0;
+				sec++;
+			}
+			if(sec == 60){
+				sec = 0;
+				min++;				
+			}
+			msec++;
+			document.getElementById('timme').innerHTML = (min+":"+sec+"."+msec);
+		}
+		
+		var listOfColors = ["green","orange","red","blue","pink","purple","yellow","black"]
+		var setcolors = [];
+		for(var i in listOfColors){
+			for (var j = 0; j < 2; j++) {
+				while(true){
+					index = Math.floor(Math.random() * 16);		
+					console.log(index)			
+					if( setcolors[index] == null){
+						setcolors[index] = listOfColors[i];
+						// s = document.getElementById(String(index+1));
+						// s.style.backgroundColor = setcolors[index];
+						break;
+					}
+				}
+			}
+		}
+		console.log(setcolors); 
+		counter = 0;
+		//при увеличении счетчика до 2 сравниваем цвета открытых ячеек при совпадении удаляем атрибут, чтоб дальше невозможно было нажимать
+		function main(obj){
+			if(counter==1 && obj.id == oldObj.id){
+				alert("same");
+				return 1;
+			}
+			obj.style.backgroundColor = setcolors[+obj.id];
+			counter++;
+			if(counter == 2){
+				counter = 0;
+				if(obj.style.backgroundColor != oldObj.style.backgroundColor){
+					document.getElementById('square').style.pointerEvents = 'none'; // отключение/включение возможности нажимать и открывать ячейки
+					setTimeout(restart, 1000, obj, oldObj);					
+				}
+				else{
+					obj.removeAttribute('onclick');
+					oldObj.removeAttribute('onclick');
+					final++;
+				}
+			}
+			oldObj = obj;		
+			if (final==8){
+				 clearInterval(timerId);
+				alert(min+":"+sec+"."+msec);
+				
+			}
+		}
+		function restart(obj, oldObj ){			
+			obj.style.backgroundColor = null;
+			oldObj.style.backgroundColor = null;
+			document.getElementById('square').style.pointerEvents = 'auto'; // отключение/включение возможности нажимать и открывать ячейки
+		}
+	</script>
+</body>
+</html>
